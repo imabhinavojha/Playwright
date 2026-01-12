@@ -6,6 +6,7 @@ const EXAMPLE_URL = 'https://example.com';
 
 // Context-centric examples demonstrating configuration, events, storage, and assertions.
 test.describe('Browser Context Examples', () => {
+  
   test('Isolated context per user session', async ({ browser }) => {
     const userContext = await browser.newContext({
       viewport: { width: 1280, height: 720 },

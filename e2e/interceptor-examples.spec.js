@@ -2,6 +2,72 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('API Interceptor Examples', () => {
   
+  test('Mock Login API without external website', async ({ page }) => {
+    // 1) Mock API first
+    await page.route('**/api/login', async route => {
+      const req = route.request();
+      const body = JSON.parse(req.postData() || '{}');
+  
+      console.log('ROUTE HIT', body);
+  
+      if (body.username === 'abhinav' && body.password === '123') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ message: 'Login successful! Welcome Abhinav.' })
+        });
+      } else {
+        await route.fulfill({
+          status: 401,
+          contentType: 'application/json',
+          body: JSON.stringify({ message: 'Invalid username or password' })
+        });
+      }
+    }); 
+  
+    // 2) Inline HTML + JS (no page.goto)
+    await page.setContent(`
+      <html>
+        <body>
+          <input id="username" placeholder="Username" />
+          <input id="password" placeholder="Password" type="password" />
+          <button id="loginBtn">Login</button>
+          <div id="result"></div>
+  
+          <script>
+            document.getElementById('loginBtn').onclick = async () => {
+              const username = document.getElementById('username').value;
+              const password = document.getElementById('password').value;
+  
+              // Use absolute URL so it goes through the network stack
+              const response = await fetch('http://example.com/api/login', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+              });
+  
+              const data = await response.json();
+              document.getElementById('result').innerText = data.message;
+            };
+          </script>
+        </body>
+      </html>
+    `); 
+  
+    // Optional debug logs
+    page.on('request', r => console.log('>>', r.method(), r.url()));
+    page.on('response', r => console.log('<<', r.status(), r.url()));
+  
+    // 3) Interact with UI
+    await page.fill('#username', 'abhinav');
+    await page.fill('#password', '123');
+    await page.click('#loginBtn');
+  
+    // 4) Assertion
+    await expect(page.locator('#result'))
+      .toHaveText('Login successful! Welcome Abhinav.', { timeout: 5000 }); // [web:18]
+  })
+  
   // Basic GET Interceptor
   test('Intercept GET request and mock response', async ({ page }) => {
     // Setup interceptor before navigation
