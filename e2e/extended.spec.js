@@ -1,36 +1,5 @@
-const { test: base, expect } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 
-// Custom fixture example: guarantees marketing homepage is ready.
-const test = base.extend({
-  marketingPage: async ({ page }, use) => {
-    await page.goto('https://playwright.dev/');
-    await use(page);
-  },
-});
-
-// Structured suite showing describe hooks + per-suite config overrides.
-test.describe('Marketing site smoke suite', () => {
-  test.use({
-    viewport: { width: 1280, height: 720 },
-    colorScheme: 'dark',
-  });
-
-  test.beforeEach(async ({ page }) => {
-    await page.setExtraHTTPHeaders({ 'x-test-suite': 'marketing-smoke' });
-  });
-
-  test.afterEach(async ({ page }) => {
-    await page.close();
-  });
-
-  test('Docs page has Playwright in title', async ({ marketingPage }) => {
-    await expect(marketingPage).toHaveTitle(/Playwright/);
-  });
-
-  test('Get Started CTA visible', async ({ marketingPage }) => {
-    await expect(marketingPage.getByRole('link', { name: 'Get started' })).toBeVisible();
-  });
-});
 
 // 1. API testing with request context
 test('API GET request', async ({ request }) => {

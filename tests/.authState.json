@@ -1,0 +1,25 @@
+{
+  "cookies": [
+    {
+      "name": "auth",
+      "value": "token123",
+      "domain": "example.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "theme",
+      "value": "dark",
+      "domain": "example.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

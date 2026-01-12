@@ -1,4 +1,6 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
 
 const EXAMPLE_URL = 'https://example.com';
 
@@ -192,12 +194,12 @@ test.describe('Browser Context Examples', () => {
     });
 
     const page = await context.newPage();
-    await page.setOfflineMode(true);
+    await context.setOffline(true);
 
     const error = await page.goto(EXAMPLE_URL).catch(err => err);
     expect(error).toBeTruthy();
 
-    await page.setOfflineMode(false);
+    await context.setOffline(false);
     await page.goto(EXAMPLE_URL);
     await expect(page).toHaveTitle(/Example Domain/);
 
@@ -215,11 +217,12 @@ test.describe('Browser Context Examples', () => {
     });
 
     await context.clearCookies();
+    const statePath = path.join(__dirname, '.tempState.json');
     await context.storageState({
-      path: 'tests/.tempState.json'
+      path: statePath
     });
 
-    const state = require('./.tempState.json');
+    const state = JSON.parse(fs.readFileSync(statePath, 'utf-8'));
     expect(Array.isArray(state.cookies)).toBeTruthy();
 
     await context.close();
