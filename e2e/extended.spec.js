@@ -25,8 +25,6 @@ test('File upload example', async ({ page }) => {
   await expect(page.locator('h3')).toHaveText('File Uploaded!');
 });
 
-
-
 // 5. Frame (iframe) interaction
 test('Iframe interaction and dropdown select example', async ({ page }) => {
   // Go to W3Schools iframe demo page
@@ -83,7 +81,6 @@ test('New tab using context.pages()', async ({ page }) => {
   await newPage.waitForLoadState();
   expect(await newPage.title()).toContain('New Window');
 });
-
 
 // 8. Browser navigation: back, forward, reload
 test('Navigation operations', async ({ page }) => {
@@ -153,7 +150,6 @@ test('context events', async ({ browser }) => {
   const page = await context.newPage();
   await page.goto('https://example.com');
 });
-
 
 test('Mobile Hindi user', async ({ browser }) => {
 

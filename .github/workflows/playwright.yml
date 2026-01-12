@@ -8,6 +8,11 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+     fail-fast: false
+    matrix:
+      shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      shardTotal: [10]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -17,8 +22,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
+    - name:  Run tests (Shard ${{ matrix.shardIndex }}/${{matrix.shardTotal }})
+      run: npx playwright test --shard=${{ matrix.shardIndex }} ${{ matrix.shardTotal }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
