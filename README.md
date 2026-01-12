@@ -58,7 +58,8 @@ playwright/
 │   ├── extended.spec.js          # Extended UI testing examples
 │   ├── pom-com-examples.spec.js  # Page Object & Component Model
 │   ├── visual-regression-accessibility.spec.js  # Visual & accessibility
-│   └── axe-core-accessibility.spec.js  # axe-core accessibility
+│   ├── axe-core-accessibility.spec.js  # axe-core accessibility
+│   └── solid-principles-examples.spec.js  # SOLID principles in testing
 ├── pages/                        # Page Object Model
 │   ├── BasePage.js              # Base page class
 │   ├── LoginPage.js             # Login page object
@@ -342,6 +343,40 @@ Additional UI testing scenarios:
 - **Screenshots**
   - Page screenshots
   - Evidence collection
+
+### 11. **SOLID Principles** (`solid-principles-examples.spec.js`)
+
+Object-oriented design principles applied to test automation:
+
+- **S - Single Responsibility Principle**
+  - Each class has one reason to change
+  - Separate concerns (validation, reporting, navigation)
+  - Example: `LoginValidator` only validates, doesn't report
+
+- **O - Open/Closed Principle**
+  - Open for extension, closed for modification
+  - Extend base classes without modifying them
+  - Example: `BaseValidator` extended by `LoginPageValidator`
+
+- **L - Liskov Substitution Principle**
+  - Subtypes must be substitutable for base types
+  - Derived classes replace base classes seamlessly
+  - Example: `LoginPage` and `DashboardPage` both extend `BasePage`
+
+- **I - Interface Segregation Principle**
+  - Clients shouldn't depend on unused interfaces
+  - Create specific, focused interfaces
+  - Example: `Clickable`, `Typable`, `Validatable` as separate interfaces
+
+- **D - Dependency Inversion Principle**
+  - Depend on abstractions, not concretions
+  - High-level modules depend on interfaces
+  - Example: `LoginFlow` depends on `AuthenticationService` abstraction
+
+- **Complete Example**
+  - Full login system demonstrating all SOLID principles
+  - Practical, real-world implementation
+  - Best practices for enterprise test automation
 
 ## 🏃 Running Tests
 
