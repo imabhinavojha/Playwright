@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "loadtest": "k6 run e2e/k6-load-test.js"
   },
   "keywords": [],
   "author": "",

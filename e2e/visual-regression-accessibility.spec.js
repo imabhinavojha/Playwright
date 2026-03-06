@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect, chromium } = require('@playwright/test');
 
 test.describe('11.1 Visual Regression Testing', () => {
   
@@ -27,13 +27,15 @@ test.describe('11.1 Visual Regression Testing', () => {
     });
   });
 
-  test('Advanced Configuration - Dashboard with Masking', async ({ page }) => {
+  test('Advanced Configuration - Dashboard with Masking', async () => {
+    const browser = await chromium.launch({ headless: false }); // headless mode
+      const page = await browser.newPage();
     await page.goto('https://the-internet.herokuapp.com/secure');
     
-    // First login to access secure page
+    // First lgin to access secure page
     await page.goto('https://the-internet.herokuapp.com/login');
-    await page.getByLabel('Username').fill('tomsmith');
-    await page.getByLabel('Password').fill('SuperSecretPassword!');
+    await page.getByRole('textbox', { name: 'Username' }).fill('tomsmith');
+    await page.getByRole('textbox', { name: 'Password' }).fill('SuperSecretPassword!');
     await page.getByRole('button', { name: 'Login' }).click();
     
     await page.goto('https://the-internet.herokuapp.com/secure');

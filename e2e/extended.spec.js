@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect,chromium } = require('@playwright/test');
 
 
 // 1. API testing with request context
@@ -49,9 +49,14 @@ test('Iframe interaction and dropdown select example', async ({ page }) => {
 });
 
 // 6. Dialog (alert, confirm, prompt)
-test('Handling dialog', async ({ page }) => {
+test('Handling dialog', async () => {
+  const browser = await chromium.launch({ headless: false }); // headless mode
+  const page = await browser.newPage();
+
   await page.goto('https://the-internet.herokuapp.com/javascript_alerts');
-  page.once('dialog', async dialog => {
+  await page.waitForLoadState('networkidle')
+  await page.waitForTimeout(5000);
+  page.once('dialog', async (dialog) => {
     expect(dialog.type()).toBe('alert');
     await dialog.accept();
   });

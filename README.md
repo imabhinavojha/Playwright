@@ -45,6 +45,23 @@ npx playwright install
 npm install -D @axe-core/playwright
 ```
 
+### Load testing with k6
+
+k6 is a lightweight load‑testing tool written in Go. Install it on macOS using Homebrew:
+
+```bash
+brew install k6
+```
+
+Once k6 is available on your path you can run the bundled script with:
+
+```bash
+npm run loadtest
+```
+
+The example script lives in `e2e/k6-load-test.js` and exercises `https://test.k6.io` with 10 virtual users over 30 seconds.
+
+
 ## 📁 Project Structure
 
 ```
